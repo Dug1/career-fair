@@ -4,13 +4,15 @@ from pygame.image import load
 
 SCREEN_DIM = (700, 800)
 
-floor_tile = pygame.image.load("")
+floor_tile_light = pygame.image.load("/floor_tile_light.png")
+floor_tile_dark = pygame.image.load("/floor_tile_dark.png")
 
 #loading image files
 
 
 os.chdir("images")
-persons_images = [(load(directory + "/front.png"), directory + load("/back.png"),directory + load("/side.png")) for directory in os.listdir if "person" in directory]
+persons_images = [(load(directory + "/front.png"), directory + load("/back.png"),directory + load("/left.png"), directory + load("/left.png")) for directory in os.listdir if "person" in directory]
+
 
 
 pygame.init()
