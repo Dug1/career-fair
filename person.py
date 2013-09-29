@@ -1,9 +1,10 @@
 import pygame
+from pygame import Rect
 import random
 from random import choice
 
 class Person:
-    def __init__(self, rect, sprite, stands, velocity = (0,0))  
+    def __init__(self, rect, sprite, stands, velocity = (0,0)):
         self.rect = rect
         self.sprite = sprite
         self.velocity = velocity	
@@ -73,3 +74,4 @@ class Person:
         if end_point[1] > rectangle.centery:
             return (0, velocity_constant)
 
+>>>>>>> e187a20194695ddee253f630796673551e5c808c

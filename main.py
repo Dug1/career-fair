@@ -1,11 +1,10 @@
 import pygame, sys, os
 from floor import *
 from stand import *
+from person import *
 
 from random import choice
 from pygame.image import load
-
-SCREEN_DIM = (832, 400)
 
 floor_tile = pygame.image.load("images/floor/floor_tile.png")
 stand_left = pygame.image.load("images/stands/stand_left.png")
@@ -18,12 +17,13 @@ tile_size = 16
 persons_images = [(load("images/" + directory + "/front.png"), load("images/" + directory + "/back.png"), load("images/" + directory + "/left.png"), load("images/" + directory + "/left.png")) for directory in os.listdir("images") if "person" in directory]
 
 pygame.init()
+SCREEN_DIM = (52*tile_size, 25*tile_size)
 surface =  pygame.display.set_mode(SCREEN_DIM)
 clock = pygame.time.Clock()
 floor = Floor(SCREEN_DIM, floor_tile)
 
 #make stands 
-def makeStands():
+def make_stands():
     import pygame
     from pygame import Rect
     tilesize = 16
@@ -36,13 +36,15 @@ def makeStands():
     while x <= (width * 3 + intermittentspace * 3):
         #True is left, False is right
         for y in range(vspace + height, vspace + 5 * height + 1, height):
-            a.append(Stand(Rect((x, y), (width, height)), True))
+            a.append(Stand(Rect((x, y), (width, height)), stand_left, True))
         x += width
         for y in range(vspace + height, vspace + 5 * height + 1, height):
-            a.append(Stand(Rect((x, y), (width, height)), False))
+            a.append(Stand(Rect((x, y), (width, height)), stand_right, False))
         x += intermittentspace
     return a
 
+stands = make_stands()
+person = Person(stands, pygame.Rect(1,1,16,16), persons_images[0][0])
 #generate random people
 
 while True: 
@@ -50,13 +52,20 @@ while True:
         if event.type == pygame.QUIT:
             sys.exit()
 
-	time_passed = clock.tick(30)
+    time_passed = clock.tick(30)
 
 	#reapply the background
-	floor.flash_background(surface)
-	for i in range(0, len(stands)):
-		surface.blit(stands[i].image, stands[i].rect)
-	pygame.display.flip()
+    floor.flash_background(surface)
+    
+    person.update(time_passed/100, stands)
+    key_pressed = pygame.key.get_focused()
+    hero.update(stands, key_pressed)
+    
+    for i in range(0, len(stands)):
+        surface.blit(stands[i].image, stands[i].rect)
+    surface.blit(person.sprite, person.rect)
+    pygame.display.flip()
+
 
 
 
