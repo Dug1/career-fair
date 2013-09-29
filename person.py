@@ -38,4 +38,56 @@ class Person:
 
     def find_new_stand(self):
         self.current_stand = choice(self.stands)
-                    
+
+    def search_AI(self, rectangle, end_point, actors):
+        velocity_constant = .5
+        def find_adjacent(actors):
+            unit = 16
+            vlimit = 400
+            hlimit = 832
+            available_moves = []
+            available_moves.append(rectangle.move(unit, 0))
+            available_moves.append(rectangle.move(- 1 * unit, 0))
+            available_moves.append(rectangle.move(0, unit))
+            available_moves.append(rectangle.move(0, -1 * unit))
+            for move in available_moves: 
+                if move.centerx > hlimit:             #If outside horizontal border
+                    available_moves.pop(i)
+                elif move.centery < vlimit:           #If outside vertical border
+                    move.pop(i)
+                else:
+                    for actor in actors:
+                        if move.colliderect(actor):   #If collides with another actor
+                            move.pop()
+                for i in range(0, numbad):
+                    available_moves.remove(0)
+            return available_moves
+        def find_route(available_moves, end_point):
+            distances = []
+            for i in available_moves:
+                distances.append(math.fabs(end_point[0] - i.centerx) + math.fabs(end_point[1] - i.centery))
+            return available_moves[available_moves.index(available_moves.min())]
+            
+        available_moves = find_adjacent(actors)
+        target_position = find_route(available_moves)
+        
+        if target_position.centerx < rectangle.centerx:
+            return (-1 * velocity_constant, 0)
+        if target_position.centerx > rectangle.centerx:
+            return (velocity_constant, 0)
+        if target_position.centery < rectangle.centery:
+            return (0, -1 * velocity_constant)
+        if target_position.centery > rectangle.centery:
+            return (0, velocity_constant)
+            
+    def wait_AI(self, rectangle, end_point, actors):
+        velocity_constant = .5
+        if end_point[0] < rectangle.centerx:
+            return (-1 * velocity_constant, 0)
+        if end_point[0] > rectangle.centerx:
+            return (velocity_constant, 0)
+        if end_point[1] < rectangle.centery:
+            return (0, -1 * velocity_constant)
+        if end_point[1] > rectangle.centery:
+            return (0, velocity_constant)
+

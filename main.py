@@ -1,23 +1,26 @@
 import pygame, sys, os
+from floor import *
+from stand import *
 
 from random import choice
-#from pygame.local import *
-#from pygame.image import load
+from pygame.image import load
 
-SCREEN_DIM = (700, 800)
+SCREEN_DIM = (832, 400)
+
+floor_tile = pygame.image.load("images/floor/floor_tile.png")
+stand_left = pygame.image.load("images/stands/stand_left.png")
+stand_right =pygame.image.load("images/stands/stand_right.png")
 person_limit = 30
-tile_size = 16 
+tile_size = 16
 
 #loading image files
 
-os.chdir("images")
-persons_images = [(load(directory + "/front.png"), directory + load("/back.png"),directory + load("/side.png")) for directory in os.listdir if "person" in directory]
-
+persons_images = [(load("images/" + directory + "/front.png"), load("images/" + directory + "/back.png"), load("images/" + directory + "/left.png"), load("images/" + directory + "/left.png")) for directory in os.listdir("images") if "person" in directory]
 
 pygame.init()
 surface =  pygame.display.set_mode(SCREEN_DIM)
 clock = pygame.time.Clock()
-floor = Floor(SCREEN_DIM)
+floor = Floor(SCREEN_DIM, floor_tile)
 
 #make stands 
 def makeStands():
@@ -39,26 +42,21 @@ def makeStands():
             a.append(Stand(Rect((x, y), (width, height)), False))
         x += intermittentspace
     return a
-    
+
 #generate random people
 
 while True: 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-        elif event.type == pygame.key.K_w:
-            sys.exit()
-        elif event.type == pygame.key.K_a:
-            sys.exit()
-        elif event.type == pygame.key.K_s:
-            sys.exit()
-        elif event.type == pygame.key.K_d:
-            sys.exit()
 
-    time_passed = clock.tick(30)
+	time_passed = clock.tick(30)
 
-    #reapply the background
-    floor.flash_background(surface)
+	#reapply the background
+	floor.flash_background(surface)
+	for i in range(0, len(stands)):
+		surface.blit(stands[i].image, stands[i].rect)
+	pygame.display.flip()
 
 
 
