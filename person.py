@@ -13,17 +13,21 @@ class Person:
         self.waiting = False
         self.find_new_stand()
     
-    def update(self, actors):
+    def update(self, time_passed, actors):
         if self.is_at_goal_stand(): 
             self.ai = self.wait_AI
             self.stand.add_person(self)
-        self.velocity = adjust_for_collision(self.ai(self.rect, self.stand.get_end_of_line, actors))    
+        if collides_with(*actors)
+            self.velocity = (0, 0)
+        else:
+            self.velocity = self.ai(*actors)
+
       
-    def adjust_for_collision(self, actors):
-        for actor in actor:
+    def collides_with(self, *actors):
+        for actor in actors:
             if actor.rect.colliderect(self.rect)
-                return (0,0)
-        return self.velocity
+                return True
+        return False
 
     def give_shirt(self, num_shirt):
         self.find_new_stand
@@ -39,46 +43,24 @@ class Person:
     def find_new_stand(self):
         self.current_stand = choice(self.stands)
 
-    def search_AI(self, rectangle, end_point, actors):
-        velocity_constant = .5
-        def find_adjacent(actors):
-            unit = 16
-            vlimit = 400
-            hlimit = 832
-            available_moves = []
-            available_moves.append(rectangle.move(unit, 0))
-            available_moves.append(rectangle.move(- 1 * unit, 0))
-            available_moves.append(rectangle.move(0, unit))
-            available_moves.append(rectangle.move(0, -1 * unit))
-            for move in available_moves: 
-                if move.centerx > hlimit:             #If outside horizontal border
-                    available_moves.pop(i)
-                elif move.centery < vlimit:           #If outside vertical border
-                    move.pop(i)
-                else:
-                    for actor in actors:
-                        if move.colliderect(actor):   #If collides with another actor
-                            move.pop()
-                for i in range(0, numbad):
-                    available_moves.remove(0)
-            return available_moves
-        def find_route(available_moves, end_point):
-            distances = []
-            for i in available_moves:
-                distances.append(math.fabs(end_point[0] - i.centerx) + math.fabs(end_point[1] - i.centery))
-            return available_moves[available_moves.index(available_moves.min())]
-            
-        available_moves = find_adjacent(actors)
-        target_position = find_route(available_moves)
-        
-        if target_position.centerx < rectangle.centerx:
-            return (-1 * velocity_constant, 0)
-        if target_position.centerx > rectangle.centerx:
-            return (velocity_constant, 0)
-        if target_position.centery < rectangle.centery:
-            return (0, -1 * velocity_constant)
-        if target_position.centery > rectangle.centery:
-            return (0, velocity_constant)
+    def search_AI(self, time_passed, actors):
+        velocity_constant, vlimit, hlimit = 400, 832, 0.5
+        rect, endpoint = self.rect, self.stand.get_end_of_line()
+        direction =(cmp(endpoint[0], self.rect.centerx), cmp(endpoint[1], self.rect.centery)) 
+       
+        #variables are declared for readability
+        move_towards_x = direction[0] * time_passed * velocity_constant
+        if direction[0] != 0 or rect.move(move_towards_x, 0).collidelist(actor.rect for actor in actors) != -1:
+            return (move_towards_x, 0)
+
+        move_towards_y = direction[1] * time_passed * velocity_constant
+        if direction[1] != 0 or rect.move(0, move_towards_y).collidelist(actor.rect for actor in actors) == -1:
+            return (0, move_towards_y)
+
+        if rect.move(-move_towards_x, 0).collidelist(actor.rect for actor in actors) == -1:
+            return (-move_towards_x, 0)
+
+        return (0, -move_towards_y)
             
     def wait_AI(self, rectangle, end_point, actors):
         velocity_constant = .5
