@@ -1,6 +1,7 @@
 class Person:
     import pygame
     import random
+    
     def __init__(self, actor, rect, sprite, waiting, velocity = [0, 0]):
         self.rect = rect
         self.sprite = sprite
