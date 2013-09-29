@@ -1,128 +1,95 @@
 import pygame
 from pygame import Rect
 import random
+from random import choice
 
 class Person:
-    def __init__(self, actor, rect, sprite, velocity = [0, 0]):
+    def __init__(self, rect, sprite, stands, velocity = (0,0)):
         self.rect = rect
         self.sprite = sprite
-        self.velocity = x, y = velocity	
-        #Right and Up are positive; Left/down negative       
-        self.waiting = False
-        #Speed is in pixels per tick
+        self.velocity = velocity	
         self.unit = 16
-        self.endpoint = x, y = -1, -1
-        self.new_stand(actor)
-
-    def update(self, time, actors):
-        if self.is_waiting():
-            self.velocity = self.wait_AI()
-        else:
-            self.velocity = self.destination_AI(actors, self.endpoint)
-        testrect = Rect((0, 0), (3, 3))
-        testrect = self.rect.copy()
-        testrect = testrect.move(self.velocity[0] * time, self.velocity[1] * time)
-        if self.collide(testrect, actors):
-            self.changespeed()
-        self.rect = self.rect.move(self.velocity[0] * time, self.velocity[1] * time)
-        
-        
-    def get_shirt(self, num_shirts):
-        self.change_waiting(False)
-        self.new_stand(actors)
-
-    def put_in_line(self, endpoint):
-        self.waiting = True
-        self.endpoint = endpoint
+        self.ai = self.search_AI
+        self.stands = stands
+        self.waiting = False
+        self.find_new_stand()
     
-    def get_center(self):
-        center = x, y = self.rect.centerx, self.rect.centery
-        return center
-                    
-    def is_waiting(self):
-        return self.waiting
+    def update(self, actors):
+        if self.is_at_goal_stand(): 
+            self.ai = self.wait_AI
+            self.stand.add_person(self)
+        self.velocity = adjust_for_collision(self.ai(self.rect, self.stand.get_end_of_line, actors))    
+      
+    def adjust_for_collision(self, actors):
+        for actor in actor:
+            if actor.rect.colliderect(self.rect)
+                return (0,0)
+        return self.velocity
+
+    def give_shirt(self, num_shirt):
+        self.find_new_stand
+        self.ai = self.search_AI()
+
+    def put_in_line(self):
+        self.ai = waitAI()
+        self.waiting = True
             
-    def change_waiting(x):
-        self.waiting = x
-            
-    def change_speed(self, xcomp = 0, ycomp = 0):
-        self.speed = x, y = xcomp, ycomp
-	
-    def new_stand(self, x):
-        #x is an array of stands
-        if self.is_waiting():
-            return x[random.randrange(0, len(x))]
-        else:
-            while True:
-                i = x[random.randrange(0, len(x))]									#get random stand
-                if i.rect.centerx == self.endpoint[0] and i.rect.centery == self.endpoint[1]:
-                    pass															
+    def is_at_goal_stand(self):
+        return self.center == self.current_stand.end_of_line
+
+    def find_new_stand(self):
+        self.current_stand = choice(self.stands)
+
+    def search_AI(self, rectangle, end_point, actors):
+        velocity_constant = .5
+        def find_adjacent(actors):
+            unit = 16
+            vlimit = 400
+            hlimit = 832
+            available_moves = []
+            available_moves.append(rectangle.move(unit, 0))
+            available_moves.append(rectangle.move(- 1 * unit, 0))
+            available_moves.append(rectangle.move(0, unit))
+            available_moves.append(rectangle.move(0, -1 * unit))
+            for move in available_moves: 
+                if move.centerx > hlimit:             #If outside horizontal border
+                    available_moves.pop(i)
+                elif move.centery < vlimit:           #If outside vertical border
+                    move.pop(i)
                 else:
-                    self.endpoint = i.rect.centerx, i.rect.centery
-                    return i														
-                    
-    def collide(self, testrect, x):											    #x is an array of actors 
-        for i in x:																#Tests for collision of current position with all actors
-            if i.rect.colliderect(testrect):
-                return True
-            if i.rect.centerx < 0 or i.rect.centery < 0:
-                return True
-            if i.rect.centerx > 832 or i.rect.centery > 400:
-                return True
-        return False
-    def wait_AI(self):
-        velocity
-        if self.position[0] < self.endpoint[0]:
-            velocity = .5
-        else:
-            velocity = -.5
-        self.change_speed(velocity)
-        return velocity
-			
-    def destination_AI(self, actors, endpoint):
-        def available_adjacent(actors):
-            a=[]
-            for i in range (0, 4):
-                a.append(self.rect.copy())
-            a.append(self.rect.move(0, self.unit))                     #Adjacent rectangles
-            a.append(self.rect.move(0, -1 * self.unit))
-            a.append(self.rect.move(self.unit, 0))
-            a.append(self.rect.move(-1 * self.unit, 0))
-            print(a)
-            for i in range(0, 3):                       #Get rid of collisions
-                for x in actors:
-                    if a[i].colliderect(x):
-                        a[i] = 0
-                    elif a[i].centerx < 0 or a[i].centery < 0:
-                       a[i] = 0
-                    elif a[i].centerx > 832 or a[i].centery > 400:
-                       a[i] = 0
-            if a.count(0) > 0:
-                a.remove(0)                                 #Delete unnecessary items
-            return a
-        #Begin processing minimal distance
-        def find_route(a):
-            dist = []
-            for i in a:
-                x = (endpoint[0] - i.centerx) + (endpoint[1] - i.centery)
-                dist.append(x)
-            least = a[0]
-            for i in a:
-                if i < least:
-                    least = i
-            return a[a.index(least)]
-        dest = find_route(available_adjacent(actors))
-        velocity = (0,0)
-        pos = []
-        pos = self.rect.center
-        if dest.centerx > pos[0]:
-            velocity = x, y = -.5, 0
-        if dest.centerx < pos[0]:
-            velocity = x, y = .5, 0
-        if dest.centery > pos[1]:
-            velocity = x, y = 0, -.5
-        if dest.centery < pos[1]:
-            velocity = x, y = 0, .5
-        self.change_speed(velocity[0], velocity[1])
-        return velocity
-        		
+                    for actor in actors:
+                        if move.colliderect(actor):   #If collides with another actor
+                            move.pop()
+                for i in range(0, numbad):
+                    available_moves.remove(0)
+            return available_moves
+        def find_route(available_moves, end_point):
+            distances = []
+            for i in available_moves:
+                distances.append(math.fabs(end_point[0] - i.centerx) + math.fabs(end_point[1] - i.centery))
+            return available_moves[available_moves.index(available_moves.min())]
+            
+        available_moves = find_adjacent(actors)
+        target_position = find_route(available_moves)
+        
+        if target_position.centerx < rectangle.centerx:
+            return (-1 * velocity_constant, 0)
+        if target_position.centerx > rectangle.centerx:
+            return (velocity_constant, 0)
+        if target_position.centery < rectangle.centery:
+            return (0, -1 * velocity_constant)
+        if target_position.centery > rectangle.centery:
+            return (0, velocity_constant)
+            
+    def wait_AI(self, rectangle, end_point, actors):
+        velocity_constant = .5
+        if end_point[0] < rectangle.centerx:
+            return (-1 * velocity_constant, 0)
+        if end_point[0] > rectangle.centerx:
+            return (velocity_constant, 0)
+        if end_point[1] < rectangle.centery:
+            return (0, -1 * velocity_constant)
+        if end_point[1] > rectangle.centery:
+            return (0, velocity_constant)
+
+>>>>>>> e187a20194695ddee253f630796673551e5c808c

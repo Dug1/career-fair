@@ -47,8 +47,7 @@ stands = make_stands()
 person = Person(stands, pygame.Rect(1,1,16,16), persons_images[0][0])
 #generate random people
 
-while True:
-
+while True: 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()

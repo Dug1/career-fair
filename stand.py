@@ -35,7 +35,7 @@ class Stand:
     def update(self):
         # delay for giving out shirts
         if self.cooldown == 0 and first.get_center() == self.line_endpoint:
-            give_shirt(self,self.line[0])
+            self.give_shirt(self,self.line[0])
             self.cooldown = 5000
         else:
             self.cooldown = max(self.cooldown - self.clock.tick(), 0) 
