@@ -23,25 +23,26 @@ clock = pygame.time.Clock()
 floor = Floor(SCREEN_DIM, floor_tile)
 
 #make stands 
-def make_stands():
-	import pygame
-	from pygame import Rect
-	a = []
-	width = 2 * tile_size
-	height = 3 * tile_size
-	intermittentspace = 10 * tile_size
-	vspace = 5 * tile_size
-	x = intermittentspace
-	while x <= (width * 3 + intermittentspace * 3):																	#True is left, False is right
-		for y in range(vspace + height, vspace + 5 * height + 1, height):
-			a.append(Stand(Rect((x, y), (width, height)), stand_left, True))
-		x += width
-		for y in range(vspace + height, vspace + 5 * height + 1, height):
-			a.append(Stand(Rect((x, y), (width, height)), stand_right, False))
-		x += intermittentspace
-	return a
+def makeStands():
+    import pygame
+    from pygame import Rect
+    tilesize = 16
+    width = 2 * tilesize
+    height = 3 * tilesize
+    intermittentspace = 10 * tilesize
+    vspace = 5 * tilesize
+    a = []
+    x = intermittentspace
+    while x <= (width * 3 + intermittentspace * 3):
+        #True is left, False is right
+        for y in range(vspace + height, vspace + 5 * height + 1, height):
+            a.append(Stand(Rect((x, y), (width, height)), True))
+        x += width
+        for y in range(vspace + height, vspace + 5 * height + 1, height):
+            a.append(Stand(Rect((x, y), (width, height)), False))
+        x += intermittentspace
+    return a
 
-stands = make_stands()	
 #generate random people
 
 while True: 
