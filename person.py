@@ -37,8 +37,8 @@ class Person:
         if waiting == True:
             pass
         else:
-            self.stand = newstand(x)
-    
+            self.stand = new_stand(x)
+
     def putinline(self, endpoint):
         self.waiting = True
         self.endpoint = endpoint
@@ -56,10 +56,7 @@ class Person:
     def changespeed(self, xcomp = 0, ycomp = 0):
         self.speed = x, y = xcomp, ycomp
 	
-    def new_stand(self, x):															#x is an array of stands
-        if self.is_waiting():
-    
-    def newstand(self, x):
+    def new_stand(self, x):
         #x is an array of stands
         if self.is_waiting():
             return x[random.randrange(0, len(x))]
