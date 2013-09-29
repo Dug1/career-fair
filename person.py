@@ -7,6 +7,7 @@ class Person:
 		self.velocity = x, y = velocity												#Right and Up are positive; Left/down negative
 		self.waiting = False														#Speed is in pixels per tick
 		self.unit = 16
+		self.speed = 0
 		
 	
 	def update(x):																#x is an array of stands
@@ -55,7 +56,24 @@ class Person:
 		else:
 			self.changespeed(-.5)
 			
-	def destinationAI(self, actors, endpoint, nomanland = self.position):
+	def destinationAI(self, actors, endpoint):
+		
+		
+		dest = findroute(availableadjacent(actors))
+		velocity
+		pos = []
+		pos = self.getcenter()
+		if dest.centerx > pos[0]:
+			velocity = x, y = .5, 0
+		if dest.centerx < pos[0]:
+			velocity = x, y = -.5, 0
+		if dest.centery > pos[1]:
+			velocity = x, y = 0, .5
+		if dest.centery < pos[1]:
+			velocity = x, y = 0, -.5
+		return velocity
+		
+		return velocity
 		def availableadjacent(actors):
 			a=[]
 			for i in range (0, 3):
@@ -64,21 +82,21 @@ class Person:
 			a[1].move(0, -1 * self.unit)
 			a[2].move(unit, 0)
 			a[3].move(-1 * unit, 0)
-			for i in range (0, 3):						#get rid of previous position
-				if a[i].center == nomanland
-					a[i] = 0
 			for i in range(0, 3):						#Get rid of collisions
 				for x in actors:
 					if i.colliderect(x):
 						a[i] = 0
 			a.remove(0)									#Delete unnecessary items
-			dist=[]
-			#Begin processing minimal distance
-			for i in a:
-				dist.append(i.centerx
-				
-			
-			
 			return a
-		def
+		#Begin processing minimal distance
+		def findroute(a):
+			dist = []
+			for i in a:
+				x = (endpoint.centerx - i.centerx) + (endpoint.centery - i.centery)
+				dist.append(x)
+			least = a[0]
+			for i in a:
+				if i < least:
+					least = i
+			return a[a.index(least)]
 				
