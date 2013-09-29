@@ -12,6 +12,10 @@ class Person:
 
 
     def update(self, time, actors):
+        if is_waiting():
+            self.velocity = wait_AI()
+        else:
+            self.velocity = destination_AI(actors)
         testrect = Rect((0, 0), (3, 3))
         testrect = self.rect.copy()
         testrect.move(velocity[0] * time, velocity[1] * time)
@@ -22,13 +26,12 @@ class Person:
         
     def get_shirt(self, num_shirts):
         change_waiting(False)
-        newstand(actors)
+        new_stand(actors)
     
     
     def put_in_line(self, endpoint):
         self.waiting = True
-        self.destination = endpoint
-        wait_AI()
+        self.endpoint = endpoint
     
     def get_center(self):
         center = x, y = self.rect.centerx, self.rect.centery
@@ -44,12 +47,12 @@ class Person:
         self.speed = x, y = xcomp, ycomp
 	
     def new_stand(self, x):															#x is an array of stands
-        if self.stand == None:
+        if self.is_waiting():
             return x[random.randrange(0, len(x))]
         else:
             while True:
                 i = x[random.randrange(0, len(x))]									#get random stand
-                if i.rect.center == self.stand.rect.center:							#test stand position to current stand position
+                if i.rect.centerx == self.endpoint[0] and i.rect.centery == self.endpoint[1]:
                     pass															
                 else:
                     return i														
@@ -59,9 +62,9 @@ class Person:
             if i.rect.colliderect(testrect):
                 return True
         return False
-    def wait_AI(self, end_point):
+    def wait_AI(self):
         velocity
-        if self.position[0] < end_point[0]:
+        if self.position[0] < self.endpoint[0]:
             velocity = .5
         else:
             velocity = -.5
