@@ -72,6 +72,10 @@ class Person:
         for i in x:																#Tests for collision of current position with all actors
             if i.rect.colliderect(testrect):
                 return True
+            if i.centerx < 0 or i.centery < 0:
+                return True
+            if i.centerx > 832 or i.centery > 400:
+                return True
         return False
     def wait_AI(self):
         velocity
@@ -107,6 +111,10 @@ class Person:
             for i in range(0, 3):						#Get rid of collisions
                 for x in actors:
                     if i.colliderect(x):
+                        a[i] = 0
+                    if i.centerx < 0 or i.centery < 0:
+                        a[i] = 0
+                    if i.centerx > 832 or i.centery > 400:
                         a[i] = 0
             a.remove(0)									#Delete unnecessary items
             return a
