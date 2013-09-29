@@ -1,11 +1,14 @@
+import pygame
+import random
+
 class Person:
-    import pygame
-    import random
-    def __init__(self, actor, rect, sprite, waiting, velocity = [0, 0]):
+    def __init__(self, actor, rect, sprite, waiting = [0, 0]):
         self.rect = rect
         self.sprite = sprite
-        self.velocity = x, y = velocity												#Right and Up are positive; Left/down negative
-        self.waiting = False														#Speed is in pixels per tick
+        self.velocity = x, y = velocity	
+        #Right and Up are positive; Left/down negative       
+        self.waiting = Fales
+        #Speed is in pixels per tick
         self.unit = 16
         self.speed = 0
         new_stand(actor)
@@ -27,26 +30,37 @@ class Person:
     def get_shirt(self, num_shirts):
         change_waiting(False)
         new_stand(actors)
+        
     
+    def update(x):
+        #x is an array of stands
+        if waiting == True:
+            pass
+        else:
+            self.stand = newstand(x)
     
-    def put_in_line(self, endpoint):
+    def putinline(self, endpoint):
         self.waiting = True
         self.endpoint = endpoint
     
-    def get_center(self):
+    def getcenter(self):
         center = x, y = self.rect.centerx, self.rect.centery
         return center
-			
-    def is_waiting(self):
+                    
+    def iswaiting(self):
         return self.waiting
-		
-    def change_Waiting(x):
+            
+    def changeWaiting(x):
         self.waiting = x
-		
-    def change_speed(self, xcomp = 0, ycomp = 0):
+            
+    def changespeed(self, xcomp = 0, ycomp = 0):
         self.speed = x, y = xcomp, ycomp
 	
     def new_stand(self, x):															#x is an array of stands
+        if self.is_waiting():
+    
+    def newstand(self, x):
+        #x is an array of stands
         if self.is_waiting():
             return x[random.randrange(0, len(x))]
         else:
