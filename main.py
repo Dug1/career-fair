@@ -1,13 +1,15 @@
 import pygame, sys, os
 from floor import *
+from stand import *
 
 from random import choice
-#from pygame.local import *
 from pygame.image import load
 
-SCREEN_DIM = (700, 800)
+SCREEN_DIM = (832, 400)
 
 floor_tile = pygame.image.load("images/floor/floor_tile.png")
+stand_left = pygame.image.load("images/stands/stand_left.png")
+stand_right =pygame.image.load("images/stands/stand_right.png")
 person_limit = 30
 tile_size = 16
 
@@ -21,19 +23,39 @@ clock = pygame.time.Clock()
 floor = Floor(SCREEN_DIM, floor_tile)
 
 #make stands 
+def make_stands():
+	import pygame
+	from pygame import Rect
+	a = []
+	width = 2 * tile_size
+	height = 3 * tile_size
+	intermittentspace = 10 * tile_size
+	vspace = 5 * tile_size
+	x = intermittentspace
+	while x <= (width * 3 + intermittentspace * 3):																	#True is left, False is right
+		for y in range(vspace + height, vspace + 5 * height + 1, height):
+			a.append(Stand(Rect((x, y), (width, height)), stand_left, True))
+		x += width
+		for y in range(vspace + height, vspace + 5 * height + 1, height):
+			a.append(Stand(Rect((x, y), (width, height)), stand_right, False))
+		x += intermittentspace
+	return a
 
+stands = make_stands()	
 #generate random people
 
 while True: 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			sys.exit()
 
-    time_passed = clock.tick(30)
+	time_passed = clock.tick(30)
 
-    #reapply the background
-    floor.flash_background(surface)
-    pygame.display.flip()
+	#reapply the background
+	floor.flash_background(surface)
+	for i in range(0, len(stands)):
+		surface.blit(stands[i].image, stands[i].rect)
+	pygame.display.flip()
 
 
 
