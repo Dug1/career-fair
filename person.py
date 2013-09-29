@@ -2,12 +2,12 @@ import pygame
 import random
 
 class Person:
-    def __init__(self, actor, rect, sprite, waiting = [0, 0]):
+    def __init__(self, actor, rect, sprite, velocity = [0, 0]):
         self.rect = rect
         self.sprite = sprite
         self.velocity = x, y = velocity	
         #Right and Up are positive; Left/down negative       
-        self.waiting = Fales
+        self.waiting = False
         #Speed is in pixels per tick
         self.unit = 16
         self.speed = 0
