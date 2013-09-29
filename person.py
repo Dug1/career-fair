@@ -11,7 +11,8 @@ class Person:
         #Speed is in pixels per tick
         self.unit = 16
         self.speed = 0
-        new_stand(actor)
+        self.endpoint = x, y = 0, 0
+        self.new_stand(actor)
 
 
     def update(self, time, actors):
@@ -39,21 +40,21 @@ class Person:
         else:
             self.stand = new_stand(x)
 
-    def putinline(self, endpoint):
+    def put_in_line(self, endpoint):
         self.waiting = True
         self.endpoint = endpoint
     
-    def getcenter(self):
+    def get_center(self):
         center = x, y = self.rect.centerx, self.rect.centery
         return center
                     
-    def iswaiting(self):
+    def is_waiting(self):
         return self.waiting
             
-    def changeWaiting(x):
+    def change_waiting(x):
         self.waiting = x
             
-    def changespeed(self, xcomp = 0, ycomp = 0):
+    def change_speed(self, xcomp = 0, ycomp = 0):
         self.speed = x, y = xcomp, ycomp
 	
     def new_stand(self, x):
