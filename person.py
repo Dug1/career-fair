@@ -10,7 +10,7 @@ class Person:
         self.waiting = False
         #Speed is in pixels per tick
         self.unit = 16
-        self.speed = 0
+        self.endpoint = x, y = -1, -1
         new_stand(actor)
 
 
@@ -30,14 +30,6 @@ class Person:
     def get_shirt(self, num_shirts):
         change_waiting(False)
         new_stand(actors)
-        
-    
-    def update(x):
-        #x is an array of stands
-        if waiting == True:
-            pass
-        else:
-            self.stand = new_stand(x)
 
     def putinline(self, endpoint):
         self.waiting = True
@@ -47,13 +39,13 @@ class Person:
         center = x, y = self.rect.centerx, self.rect.centery
         return center
                     
-    def iswaiting(self):
+    def is_waiting(self):
         return self.waiting
             
-    def changeWaiting(x):
+    def change_Waiting(x):
         self.waiting = x
             
-    def changespeed(self, xcomp = 0, ycomp = 0):
+    def change_speed(self, xcomp = 0, ycomp = 0):
         self.speed = x, y = xcomp, ycomp
 	
     def new_stand(self, x):
