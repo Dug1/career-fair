@@ -44,10 +44,11 @@ def make_stands():
     return a
 
 stands = make_stands()
-person = Person(stands, pygame.Rect(0,0,16,16), persons_images[0][0])
+person = Person(stands, pygame.Rect(1,1,16,16), persons_images[0][0])
 #generate random people
 
-while True: 
+while True:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -56,11 +57,14 @@ while True:
 
 	#reapply the background
     floor.flash_background(surface)
+    
     person.update(time_passed/100, stands)
-
+    key_pressed = pygame.key.get_focused()
+    hero.update(stands, key_pressed)
+    
     for i in range(0, len(stands)):
         surface.blit(stands[i].image, stands[i].rect)
-    surface.blit(person.sprite)
+    surface.blit(person.sprite, person.rect)
     pygame.display.flip()
 
 
