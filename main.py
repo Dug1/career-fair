@@ -1,27 +1,24 @@
 import pygame, sys, os
+from floor import *
 
 from random import choice
-from pygame.local import *
+#from pygame.local import *
 from pygame.image import load
 
 SCREEN_DIM = (700, 800)
 
-floor_tile_light = pygame.image.load("/floor_tile_light.png")
-floor_tile_dark = pygame.image.load("/floor_tile_dark.png")
+floor_tile = pygame.image.load("images/floor/floor_tile.png")
 person_limit = 30
 tile_size = 16
 
 #loading image files
 
-os.chdir("images")
-persons_images = [(load(directory + "/front.png"), directory + load("/back.png"),directory + load("/left.png"), directory + load("/left.png")) for directory in os.listdir if "person" in directory]
-
-
+persons_images = [(load("images/" + directory + "/front.png"), load("images/" + directory + "/back.png"), load("images/" + directory + "/left.png"), load("images/" + directory + "/left.png")) for directory in os.listdir("images") if "person" in directory]
 
 pygame.init()
 surface =  pygame.display.set_mode(SCREEN_DIM)
 clock = pygame.time.Clock()
-floor = Floor(SCREEN_DIM)
+floor = Floor(SCREEN_DIM, floor_tile)
 
 #make stands 
 
@@ -36,6 +33,7 @@ while True:
 
     #reapply the background
     floor.flash_background(surface)
+    pygame.display.flip()
 
 
 
