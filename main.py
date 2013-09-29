@@ -46,6 +46,14 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+        elif event.type == pygame.key.K_w:
+            sys.exit()
+        elif event.type == pygame.key.K_a:
+            sys.exit()
+        elif event.type == pygame.key.K_s:
+            sys.exit()
+        elif event.type == pygame.key.K_d:
+            sys.exit()
 
     time_passed = clock.tick(30)
 
