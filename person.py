@@ -18,7 +18,7 @@ class Person:
         if self.is_at_goal_stand(): 
             self.ai = self.wait_AI
             self.stand.add_person(self)
-        if collides_with(*actors)
+        if collides_with(*actors):
             self.velocity = (0, 0)
         else:
             self.velocity = self.ai(*actors)
@@ -26,7 +26,7 @@ class Person:
       
     def collides_with(self, *actors):
         for actor in actors:
-            if actor.rect.colliderect(self.rect)
+            if actor.rect.colliderect(self.rect):
                 return True
         return False
 
@@ -74,4 +74,3 @@ class Person:
         if end_point[1] > rectangle.centery:
             return (0, velocity_constant)
 
->>>>>>> e187a20194695ddee253f630796673551e5c808c
