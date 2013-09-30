@@ -44,7 +44,7 @@ def make_stands():
     return a
 
 stands = make_stands()
-person = Person(stands, pygame.Rect(1,1,16,16), persons_images[0][0])
+person = Person(pygame.Rect(1,1,16,16), persons_images[0][0], stands)
 #generate random people
 
 while True: 
@@ -59,7 +59,7 @@ while True:
     
     person.update(time_passed/100, stands)
     key_pressed = pygame.key.get_focused()
-    hero.update(stands, key_pressed)
+    #hero.update(stands, key_pressed)
     
     for i in range(0, len(stands)):
         surface.blit(stands[i].image, stands[i].rect)

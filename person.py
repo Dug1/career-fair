@@ -18,10 +18,11 @@ class Person:
         if self.is_at_goal_stand(): 
             self.ai = self.wait_AI
             self.stand.add_person(self)
-        if collides_with(*actors):
+        if self.collides_with(*actors):
             self.velocity = (0, 0)
         else:
-            self.velocity = self.ai(*actors)
+            self.velocity = self.ai(time_passed, *actors)
+        self.rect.move_ip(self.velocity[0]*time_passed, self.velocity[1]*time_passed)
 
       
     def collides_with(self, *actors):
@@ -39,14 +40,14 @@ class Person:
         self.waiting = True
             
     def is_at_goal_stand(self):
-        return self.center == self.current_stand.end_of_line
+        return self.rect.center == self.current_stand.end_of_line
 
     def find_new_stand(self):
         self.current_stand = choice(self.stands)
 
-    def search_AI(self, time_passed, actors):
+    def search_AI(self, time_passed, *actors):
         velocity_constant, vlimit, hlimit = 400, 832, 0.5
-        rect, endpoint = self.rect, self.stand.get_end_of_line()
+        rect, endpoint = self.rect, self.current_stand.get_end_of_line()
         direction =(cmp(endpoint[0], self.rect.centerx), cmp(endpoint[1], self.rect.centery)) 
        
         #variables are declared for readability
@@ -63,7 +64,7 @@ class Person:
 
         return (0, -move_towards_y)
             
-    def wait_AI(self, rectangle, end_point, actors):
+    def wait_AI(self, rectangle, end_point, *actors):
         velocity_constant = .5
         if end_point[0] < rectangle.centerx:
             return (-1 * velocity_constant, 0)

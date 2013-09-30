@@ -41,7 +41,7 @@ class Stand:
             self.cooldown = max(self.cooldown - self.clock.tick(), 0) 
 
     def get_end_of_line(self):
-        if facing_left:
+        if self.facing_left:
             return (self.line_endpoint[0] - len(self.line) * 16, self.line_endpoint[1])
         return (self.line_endpoint[0] - len(self.line) * 16, self.line_endpoint[1])
 
