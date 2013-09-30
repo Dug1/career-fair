@@ -45,24 +45,26 @@ class Person:
     def find_new_stand(self):
         self.current_stand = choice(self.stands)
 
+    @staticmethod
+    def distance(point1, point2):
+        return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
+
     def search_AI(self, time_passed, *actors):
-        velocity_constant, vlimit, hlimit = 400, 832, 0.5
+        speed, vlimit, hlimit = 400, 832, 0.5
         rect, endpoint = self.rect, self.current_stand.get_end_of_line()
         direction =(cmp(endpoint[0], self.rect.centerx), cmp(endpoint[1], self.rect.centery)) 
        
         #variables are declared for readability
-        move_towards_x = direction[0] * time_passed * velocity_constant
-        if direction[0] != 0 or rect.move(move_towards_x, 0).collidelist(actor.rect for actor in actors) != -1:
-            return (move_towards_x, 0)
+        moves = [(direction[0] * speed , 0), (0, direction[1] * speed), (-direction[0] * speed, 0), (0, -direction[1])]
+        valid_distances_and_moves = {}
+        for move in moves:
+            rect = self.rect.move(move[0] * time_passed, move[1] * time_passed)
+            #check for bounds first, then collisions
+            if rect.top > 0 and rect.left > 0 and rect.right < hlimit and rect.bottom < vlimit and rect.collidelist([actor.rect for actor in actors]) != -1:
+                valid_moves[Person.distance(rect.center, endpoint)] = move
+        self.velocity = valid_moves[min(valid_moves.keys())]
 
-        move_towards_y = direction[1] * time_passed * velocity_constant
-        if direction[1] != 0 or rect.move(0, move_towards_y).collidelist(actor.rect for actor in actors) == -1:
-            return (0, move_towards_y)
 
-        if rect.move(-move_towards_x, 0).collidelist(actor.rect for actor in actors) == -1:
-            return (-move_towards_x, 0)
-
-        return (0, -move_towards_y)
             
     def wait_AI(self, rectangle, end_point, *actors):
         velocity_constant = .5
